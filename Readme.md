@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Андрей Прохоров](https://up.htmlacademy.ru/javascript/11/user/500793).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Донецкий](https://up.htmlacademy.ru/javascript/11/user/497669).
 
 ---
 
