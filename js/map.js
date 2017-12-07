@@ -1,5 +1,5 @@
 'use strict';
-
+var PIN_LENGTH = 8;
 var AVATAR = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var TITLE = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var TYPE = ['flat', 'house', 'bungalo'];
@@ -29,7 +29,7 @@ function getRandomPost(number) {
       guests: getRandomRangeNumber(1, 5),
       checkin: getRandom(CHECK_IN),
       checkout: getRandom(CHECK_OUT),
-      features: getRandom(FEATURES),
+      features: getRandomFeatures(),
       description: ' ',
       photos: [],
     },
@@ -76,7 +76,7 @@ function generatePins() {
   var parent = document.querySelector('.map__pins');
   var pins = [];
 
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < PIN_LENGTH; i++) {
     var post = getRandomPost(i);
     pins.push(post);
     var pin = createPinElement(post);
@@ -92,7 +92,7 @@ function generateCard(pin) {
   map.insertBefore(card, blocks);
   card.querySelector('h3').textContent = getRandom(TITLE);
   card.querySelector('small').textContent = getRandomRangeNumber(300, 900) + ', ' + getRandomRangeNumber(100, 500);
-  card.querySelector('.popup__price').textContent = getRandomRangeNumber(1000, 1000000) + String.fromCharCode(8381) + ';/ночь';
+  card.querySelector('.popup__price').textContent = getRandomRangeNumber(1000, 1000000) + String.fromCharCode(8381) + '/ночь';
 
   switch (getRandom(TYPE)) {
     case 'flat':
@@ -105,13 +105,39 @@ function generateCard(pin) {
       card.querySelector('h4').textContent = 'Дом';
       break;
   }
+  var featureContainer = card.querySelector('.popup__features');
+  while (featureContainer.firstChild) {
+    featureContainer.removeChild(featureContainer.firstChild);
+  }
+  var features = pin.offer.features;
+  for (var i = 0; i < features.length; i++) {
+    var featureElement = createFeatureElement(features[i]);
+    featureContainer.appendChild(featureElement);
+  }
 
   cardParagraph[2].textContent = getRandomRangeNumber(1, 5) + ' для ' + getRandomRangeNumber(1, 5) + ' гостей';
   cardParagraph[3].textContent = 'Заезд после ' + getRandom(CHECK_IN) + ' , выезд до ' + getRandom(CHECK_OUT);
+
   cardParagraph[4].textContent = ' ';
   card.querySelector('img').src = 'img/avatars/user' + getRandom(AVATAR) + '.png';
 
   return pin;
+}
+
+function getRandomFeatures() {
+  var cardFeatures = [];
+  for (var i = 0; i < FEATURES.length; i++) {
+    if (Math.random() > 0.5) {
+      cardFeatures.push(FEATURES[i]);
+    }
+  }
+  return cardFeatures;
+}
+
+function createFeatureElement(feature) {
+  var featureElement = document.createElement('li');
+  featureElement.setAttribute('class', 'feature feature--' + feature);
+  return featureElement;
 }
 
 function initMap() {
