@@ -90,11 +90,11 @@ function generateCard(pin) {
   var card = cardTemplate.cloneNode(true);
   var cardParagraph = card.querySelectorAll('p');
   map.insertBefore(card, blocks);
-  card.querySelector('h3').textContent = getRandom(TITLE);
+  card.querySelector('h3').textContent = pin.offer.title;
   card.querySelector('small').textContent = getRandomRangeNumber(300, 900) + ', ' + getRandomRangeNumber(100, 500);
   card.querySelector('.popup__price').textContent = getRandomRangeNumber(1000, 1000000) + String.fromCharCode(8381) + '/ночь';
 
-  switch (getRandom(TYPE)) {
+  switch (pin.offer.type) {
     case 'flat':
       card.querySelector('h4').textContent = 'Квартира';
       break;
@@ -115,8 +115,8 @@ function generateCard(pin) {
     featureContainer.appendChild(featureElement);
   }
 
-  cardParagraph[2].textContent = getRandomRangeNumber(1, 5) + ' для ' + getRandomRangeNumber(1, 5) + ' гостей';
-  cardParagraph[3].textContent = 'Заезд после ' + getRandom(CHECK_IN) + ' , выезд до ' + getRandom(CHECK_OUT);
+  cardParagraph[2].textContent = pin.offer.rooms + ' для ' + pin.offer.guests + ' гостей';
+  cardParagraph[3].textContent = 'Заезд после ' + pin.offer.checkin + ' , выезд до ' + pin.offer.checkout;
 
   cardParagraph[4].textContent = ' ';
   card.querySelector('img').src = 'img/avatars/user' + getRandom(AVATAR) + '.png';
